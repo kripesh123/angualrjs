@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html ng-app="store">
+<head>
+	<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+	<link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<title>AngularJs</title>
+<body ng-controller="StoreController as store">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.7/angular.min.js"></script>
+	<script type="text/javascript" src="app.js"></script>
+	<h1 align="center">-Nepal's Shop-</h1>
+	<h3 align="center">Hi Angular Js</h3>
+	<div class="container">
+		<!-- Products container -->
+		<ul class="list-group">
+			<!-- Product container -->
+			<li class="list-group-item" ng-repeat="product in store.products | limitTo:13  | orderBy:'price'" ng-hide="product.soldOut">
+				<!-- Using ng-include -->
+				<!-- <h3 ng-include="'product-title.html'" class="ng-scope">
+					<span class="ng-scope ng-binding">Awesome Multi-touch Keyboard</span>
+ 					<em class="pull-right ng-scope ng-binding">$250.00</em>
+				</h3> -->
+				<!-- Using Custom Directive -->
+				<!-- Element Directive -->
+				<!-- <h3><product-title></product-title></h3> -->
+				<!-- Attribute Directive -->
+				<h3 product-title></h3>
+				<img ng-src="{{product.images[0].thumb}}"/>
+				<button ng-show="product.canPurchase">Add to cart</button>
+				<section ng-controller="PanelController as panel">
+					<ul class="nav nav-pills">
+						<li ng-class="{active:panel.isSelected(0)}">
+							<a href ng-click="panel.selectTab(0)">Description</a>
+						</li>
+						<li ng-class="{active:panel.isSelected(1)}">
+							<a href ng-click="panel.selectTab(1)">Specifications</a>
+						</li>
+						<li ng-class="{active:panel.isSelected(2)}">
+							<a href ng-click="panel.selectTab(2)">Reviews</a>
+						</li>
+					</ul>
+				
+					<div class="panel" ng-show="panel.isSelected(0)">
+						<h4>Description</h4>
+						<blockquote>{{product.description}}</blockquote>
+					</div>
+					<div class="panel" ng-show="panel.isSelected(1)">
+						<h4>Specifications</h4>
+						<blockquote>None yet</blockquote>
+					</div>
+					<div class="panel" ng-show="panel.isSelected(2)">
+						<h4>Reviews</h4>
+						<blockquote ng-repeat="review in product.reviews | orderBy:'-stars'">
+							<b>{{review.stars}}</b>
+							{{review.body}}
+							<b>{{review.terms}}</b>
+							<b>{{review.color}}</b>
+							<cite>by: {{review.author}}</cite>
+						</blockquote>
+
+						<form name="reviewForm" ng-controller="ReviewController as reviewCtrl"
+						 ng-submit="reviewForm.$valid && reviewCtrl.addReview(product)" novalidate>
+							<blockquote>
+							<b>{{reviewCtrl.review.stars}}</b>
+							{{reviewCtrl.review.body}}
+							<b>{{reviewCtrl.review.terms}}</b>
+							<b>{{reviewCtrl.review.color}}</b>
+							<cite>by: {{reviewCtrl.review.author}}</cite>
+							</blockquote>
+							<select ng-model="reviewCtrl.review.stars" required>
+								<option value="1">1 star</option>
+								<option value="2">2 stars</option>
+								<option value="3">3 stars</option>
+								<option value="4">4 stars</option>
+								<option value="5">5 stars</option>
+							</select>
+							<textarea name="body" ng-model="reviewCtrl.review.body" required></textarea>
+							<label>by:</label>
+							<input name="author" type="email" ng-model="reviewCtrl.review.author"  class="ng-pristine ng-invalid" required>
+							<input ng-model="reviewCtrl.review.terms" type="checkbox" /> I agree to the terms
+							<input ng-model="reviewCtrl.review.color" type="radio" value="red" /> Red
+							<input ng-model="reviewCtrl.review.color" type="radio" value="blue" /> Blue
+							<input ng-model="reviewCtrl.review.color" type="radio" value="green" /> Green
+							<div> reviewForm is {{reviewForm.$valid}} </div>
+							<input type="submit" name="Submit">
+						</form>
+					</div>
+				</section>
+			</li>
+		</ul>
+	</div>
+	
+</body>
+</html>
