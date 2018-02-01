@@ -42,16 +42,22 @@
         };
     });
 
-    app.directive("productReviews", function () {
-        return {
-            restrict: 'E',
-            templateUrl: "../product-reviews.html",
-            controller:function(){
+	app.directive("productReviews", function () {
+		return {
+			restrict: 'E',
+			templateUrl: "../product-reviews.html",
+			controller:function(){
+				this.review = {};
 
-            },
-            controllerAs:''
-        };
-    });
+				this.addReview = function (product) {
+					this.review.createdOn = Date.now();
+					product.reviews.push(this.review);
+					this.review = {};
+				};
+			},
+			controllerAs:'reviewCtrl'
+		};
+	});
 
     app.directive("productDescriptions", function () {
         return {
